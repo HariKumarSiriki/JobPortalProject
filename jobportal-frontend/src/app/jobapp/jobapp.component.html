@@ -1,0 +1,126 @@
+<div class="container py-5">
+  <div class="card shadow-lg border-0 rounded-4">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">
+      <h3 class="mb-0">Job Applicants</h3>
+      <div>
+        <button class="btn btn-light btn-sm me-2" (click)="getAll()" *ngIf="!showAll">📋 Show All</button>
+    <button class="btn btn-warning btn-sm me-2" (click)="showAll = false" *ngIf="showAll">
+  🔒 Hide
+</button>
+        <button class="btn btn-outline-light btn-sm" (click)="refreshPage()">🔄 Reload</button>
+      </div>
+    </div>
+
+    <div class="card-body bg-light rounded-bottom-4">
+      <!-- Form Section -->
+      <form (ngSubmit)="save()" class="row g-3 mb-4">
+        <div class="col-md-4">
+          <input [(ngModel)]="newApplicant.applicant_name" name="name" class="form-control" placeholder="Name" required />
+        </div>
+        <div class="col-md-4">
+          <input [(ngModel)]="newApplicant.company" name="company" class="form-control" placeholder="Company" required />
+        </div>
+        <div class="col-md-4">
+          <input [(ngModel)]="newApplicant.location" name="location" class="form-control" placeholder="Location" required />
+        </div>
+        <div class="col-md-12 text-end">
+          <button type="submit" class="btn btn-{{ editing ? 'primary' : 'success' }} me-2">
+            {{ editing ? 'Update' : 'Add' }}
+          </button>
+          <button type="button" (click)="resetForm()" class="btn btn-secondary">
+            Clear
+          </button>
+        </div>
+      </form>
+
+      <!-- Table Section -->
+      <table class="table table-hover table-bordered text-center bg-white rounded shadow" *ngIf="showAll">
+        <thead class="table-primary">
+          <tr>
+            <th>Name</th>
+            <th>Company</th>
+            <th>Location</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let applicant of applicants">
+            <td>{{ applicant.applicant_name }}</td>
+            <td>{{ applicant.company }}</td>
+            <td>{{ applicant.location }}</td>
+            <td>
+              <button (click)="edit(applicant)" class="btn btn-warning btn-sm me-2">✏️</button>
+              <button (click)="delete(applicant.job_id)" class="btn btn-danger btn-sm">🗑️</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Search Section -->
+  <div class="card mt-5 shadow border-0">
+    <div class="card-header bg-info text-white rounded-top">
+      <h5 class="mb-0">🔍 Search Applicant</h5>
+    </div>
+    <div class="card-body bg-white rounded-bottom">
+      <div class="row g-3 mb-3">
+        <!-- ID Dropdown -->
+        <div class="col-md-3">
+          <select class="form-select" [(ngModel)]="searchId">
+            <option value="" disabled selected>Select ID</option>
+            <option *ngFor="let applicant of allApplicants" [value]="applicant.job_id">
+              {{ applicant.job_id }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-outline-primary w-100" (click)="findById()">Find by ID</button>
+        </div>
+
+        <!-- Company Dropdown -->
+        <div class="col-md-3">
+          <select class="form-select" [(ngModel)]="searchCompany">
+            <option value="" disabled selected>Select Company</option>
+            <option *ngFor="let company of allCompanies" [value]="company">
+              {{ company }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-outline-success w-100" (click)="findByCompany()">Find by Company</button>
+        </div>
+
+        <!-- Location Dropdown -->
+        <div class="col-md-3">
+          <select class="form-select" [(ngModel)]="searchLocation">
+            <option value="" disabled selected>Select Location</option>
+            <option *ngFor="let location of allLocations" [value]="location">
+              {{ location }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-outline-info w-100" (click)="findByLocation()">Find by Location</button>
+        </div>
+      </div>
+
+      <!-- Search Result -->
+      <div *ngIf="searchResult" class="alert alert-info mt-3">
+        <strong>Result:</strong><br />
+        Name: {{ searchResult.applicant_name }}<br />
+        Company: {{ searchResult.company }}<br />
+        Location: {{ searchResult.location }}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
