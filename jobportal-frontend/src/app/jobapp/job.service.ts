@@ -43,7 +43,9 @@ searchByLocation(location: string): Observable<Jobportal> {
   return this.http.get<Jobportal>(`${this.baseUrl}/get/${location}`);
 }
 
-
+ findByCompany(company: string): Observable<Jobportal[] | Jobportal> {
+    return this.http.get<Jobportal[] | Jobportal>(`${this.baseUrl}/search/${company}`);
+  }
 
 
 }
